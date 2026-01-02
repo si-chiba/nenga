@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>AR年賀状 2026</title>
+    <script src="aframe.min_1.4.2.js"></script>
+    <script src="aframe-ar_3.4.5.js"></script>
+    <script src="aframe-look-at-component.min_1.0.0.js"></script>
+    
+    <script>
+      // マーカーを検出したときに音声を再生するスクリプト
+      AFRAME.registerComponent('marker-handler', {
+        init: function () {
+          const marker = this.el;
+          const audio = document.querySelector('#newYearAudio');
+
+          marker.addEventListener('markerFound', () => {
+            audio.play();
+          });
+
+          marker.addEventListener('markerLost', () => {
+            audio.pause();
+            audio.currentTime = 0; // マーカーが外れたら最初に戻す
+          });
+        }
+      });
+    </script>
+  </head>
+
+  <body style="margin: 0; overflow: hidden;">
+    <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
+      
+      <a-assets>
+        <img id="arImage" src="akeome2.png">
+        <audio id="newYearAudio" src="nennga-voice.wav" preload="auto"></audio>
+      </a-assets>
+
+      <a-marker type="pattern" url="nennga-marker.patt" marker-handler>
+  
+<!--      <a-image 
+         src="#arImage" 
+         position="-0.3 0.1 -0.3" 
+         rotation="-35 0 0" 
+         scale="5 5 5"
+         width="1.6" 
+         height="0.9">
+      </a-image>
+-->
+
+      <a-image 
+         src="#arImage" 
+         look-at="[camera]" 
+         position="0 0.2 0" 
+         rotation="-10 0 0" 
+         width="8.5" 
+         height="8.5">
+      </a-image>
+
+
+
+</a-marker>
+
+      <a-entity camera></a-entity>
+    </a-scene>
+  </body>
+</html>
